@@ -1,0 +1,18 @@
+﻿<metro:MetroWindow x:Class="Cafeteria.Wpf.Views.AddEditReservationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="{Binding CurrentReservationViewModel.ViewTitle}"
+        WindowStyle="None"
+        WindowStartupLocation="CenterOwner"
+        ShowCloseButton="False"
+        ShowMaxRestoreButton="False"
+        ShowMinButton="False"
+        Height="300" Width="300">
+    <Window.Resources>
+    </Window.Resources>
+
+    <Grid Background="Lavender">
+        <ContentControl Content="{Binding CurrentReservationViewModel}"></ContentControl>
+    </Grid>
+</metro:MetroWindow>

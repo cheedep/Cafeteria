@@ -1,0 +1,16 @@
+﻿<metro:MetroWindow x:Class="Cafeteria.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:views="clr-namespace:Cafeteria.Wpf.Views"
+        Title="Cafeteria" 
+        Height="500" 
+        Width="750" 
+        EnableDWMDropShadow="True"
+        WindowStartupLocation="CenterScreen" Icon="Icons8-Windows-8-Food-Cafe.ico">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <views:MainView Margin="10"/>
+    </Grid>
+</metro:MetroWindow>

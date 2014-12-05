@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="Cafeteria.Wpf.Views.ReservationsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:metrod="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             xmlns:infrastructure="clr-namespace:Cafeteria.Wpf.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <infrastructure:NullToFalseBooleanConverter x:Key="NullToFalseBooleanConverter" />
+    </UserControl.Resources>
+    <Grid Name="ReservationsGrid">
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Button Content="New Reservation" Command="{Binding AddReservationCommand}" />
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" SharedSizeGroup="reservedfor" />
+                    <ColumnDefinition Width="100" SharedSizeGroup="tablenumber" />
+                    <ColumnDefinition Width="100" SharedSizeGroup="numberofPeople" />
+                    <ColumnDefinition Width="100" SharedSizeGroup="fromtime" />
+                    <ColumnDefinition Width="100" SharedSizeGroup="totime"></ColumnDefinition>
+                    <ColumnDefinition Width="100" SharedSizeGroup="links" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Table For" Style="{StaticResource MetroTextHeader}" />
+                <TextBlock Grid.Column="1" Text="Table No." Style="{StaticResource MetroTextHeader}" />
+                <TextBlock Grid.Column="2" Text="People #" Style="{StaticResource MetroTextHeader}" />
+                <TextBlock Grid.Column="3" Text="From" Style="{StaticResource MetroTextHeader}" />
+                <TextBlock Grid.Column="4" Text="To" Style="{StaticResource MetroTextHeader}" />
+            </Grid>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Reservations}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DataTemplate.Resources>
+                                <Storyboard x:Key="ItemAnimation" AutoReverse="False">
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReservationGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ReservationGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                        <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </DataTemplate.Resources>
+
+                            <DataTemplate.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource ItemAnimation}" />
+                                </EventTrigger>
+                            </DataTemplate.Triggers>
+
+                            <Grid Name="ReservationGrid">
+                                <Grid.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                    </TransformGroup>
+                                </Grid.RenderTransform>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" SharedSizeGroup="reservedfor" />
+                                    <ColumnDefinition Width="100" SharedSizeGroup="tablenumber" />
+                                    <ColumnDefinition Width="100" SharedSizeGroup="numberofpeople" />
+                                    <ColumnDefinition Width="100" SharedSizeGroup="fromtime" />
+                                    <ColumnDefinition Width="100" SharedSizeGroup="totime" />
+                                    <ColumnDefinition Width="100" SharedSizeGroup="links" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding ReservedFor}" Style="{StaticResource MetroText}" />
+                                <TextBlock Grid.Column="1" Text="{Binding TableNumber}" Style="{StaticResource MetroText}" />
+                                <TextBlock Grid.Column="2" Text="{Binding NumberOfPeople}" Style="{StaticResource MetroText}" />
+                                <TextBlock Grid.Column="3" Text="{Binding FromTime, StringFormat=t}" Style="{StaticResource MetroText}" />
+                                <TextBlock Grid.Column="4" Text="{Binding ToTime, StringFormat=t}" Style="{StaticResource MetroText}" />
+                                <StackPanel Grid.Column="5" Orientation="Horizontal">
+                                    <TextBlock>
+                                    <Hyperlink Command="{Binding DataContext.EditReservationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                                        <TextBlock Text="edit" Style="{StaticResource MetroLink}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                    <TextBlock Text="  " />
+                                    <TextBlock>
+                                    <Hyperlink Command="{Binding DataContext.DeleteReservationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                                        <TextBlock Text="delete" Style="{StaticResource MetroLink}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <Trigger Property="HasItems" Value="False">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock Style="{StaticResource MetroText}" Text="No reservations made."></TextBlock>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+                </ItemsControl>
+            </ScrollViewer>
+            <!--<Popup Grid.Row="1" AllowsTransparency="True"  PopupAnimation="Fade" x:Name="Popup" 
+                   IsOpen="{Binding CurrentReservationViewModel, Converter={StaticResource NullToFalseBooleanConverter}}"
+                   PlacementTarget="{Binding ElementName= ReservationsGrid}"
+                   Placement="Center"
+                   >
+                <Grid Background="Lavender">
+                    <ContentControl Content="{Binding CurrentReservationViewModel}"></ContentControl>
+                </Grid>
+            </Popup>-->
+            <!--<metrod:SimpleDialog Grid.Row="1">
+                <metrod:SimpleDialog.DialogBody>
+                    <ContentControl Content="{Binding CurrentReservationViewModel}"/>
+                </metrod:SimpleDialog.DialogBody>
+            </metrod:SimpleDialog>-->
+        </Grid>
+    </Grid>
+</UserControl>
