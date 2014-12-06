@@ -8,11 +8,11 @@ namespace Cafeteria.Wpf.Infrastructure
 {
     public class UiService : IUiService
     {
-        public T GetView<T>()
+        public T GetView<T>() where T : new()
         {
             var newWindow = (T)Activator.CreateInstance(typeof(T));
 
-            var window = newWindow as MetroWindow;
+            var window = newWindow as Window;
 
             if (window != null)
             {
@@ -26,10 +26,6 @@ namespace Cafeteria.Wpf.Infrastructure
 
         public async Task<MessageDialogResult> ShowYesNoQuestionAsync(string question, string title)
         {
-            //var msg = MessageBox.Show(question,title,MessageBoxButton.YesNo);
-
-            //return msg == MessageBoxResult.Yes;
-
             var window = Application.Current.MainWindow as MetroWindow;
             window.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             return await window.ShowMessageAsync(title, question, MessageDialogStyle.AffirmativeAndNegative, window.MetroDialogOptions);
