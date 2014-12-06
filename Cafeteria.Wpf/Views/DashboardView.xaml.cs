@@ -21,7 +21,7 @@ namespace Cafeteria.Wpf.Views
 
         private string FormatHour(Period period)
         {
-            return period.Start.Hour.ToString();
+            return period.Start.Hour.ToString("##.00");
         }
 
         void DashboardView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
